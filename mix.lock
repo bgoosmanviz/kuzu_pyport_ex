@@ -1,0 +1,4 @@
+%{
+  "erlport": {:hex, :erlport, "0.11.0", "8bb46a520e6eb9146e655fbf9b824433d9d532194667069d9aa45696aae9684b", [:rebar3], [], "hexpm", "8eb136ccaf3948d329b8d1c3278ad2e17e2a7319801bc4cc2da6db278204eee4"},
+  "export": {:hex, :export, "0.1.1", "6dfd268b0692428f89b9285859a2dc02b6dcd2e8fdfbca34ac6e6a331351df91", [:mix], [{:erlport, "~> 0.9", [hex: :erlport, repo: "hexpm", optional: false]}], "hexpm", "3da7444ff4053f1824352f4bdb13fbd2c28c93c2011786fb686b649fdca1021f"},
+}
