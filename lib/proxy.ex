@@ -20,7 +20,7 @@ defmodule KuzuPyPortEx.Proxy do
 
   def handle_call({:execute, path, query, parameters}, _from, %{py: py} = state) do
     result = Python.call(py, "kuzu_proxy", "execute", [path, query, parameters])
-    {:reply, result, state}
+    {:reply, {:ok, result}, state}
   end
 
   def terminate(_reason, %{py: py} = _state) do

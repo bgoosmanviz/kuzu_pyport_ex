@@ -1,7 +1,7 @@
 defmodule KuzuPyPortEx.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.2"
   @source_url "https://github.com/bgoosmanviz/kuzu_pyport_ex"
 
   def project do
@@ -37,7 +37,9 @@ defmodule KuzuPyPortEx.MixProject do
     [
       files: [
         "lib",
-        "mix.exs"
+        "mix.exs",
+        "priv/python/kuzu_proxy.py",
+        "priv/python/requirements.txt"
       ],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}

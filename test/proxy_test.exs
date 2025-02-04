@@ -4,7 +4,7 @@ defmodule KuzuPyPortExTest do
 
   test "execute/2 performs duplication of text" do
     File.rm_rf!("tmp")
-    assert [[1]] = Proxy.execute("tmp", "RETURN 1;")
+    assert {:ok, [[1]]} = Proxy.execute("tmp", "RETURN 1;")
   end
 
   test "import demo-db" do
@@ -29,12 +29,13 @@ defmodule KuzuPyPortExTest do
     Proxy.execute(path, "COPY LivesIn FROM './priv/csv/lives-in.csv'")
 
     # Execute Cypher query
-    assert [
-             [~c"Adam", ~c"Karissa", 2020],
-             [~c"Adam", ~c"Zhang", 2020],
-             [~c"Karissa", ~c"Zhang", 2021],
-             [~c"Zhang", ~c"Noura", 2022]
-           ] =
+    assert {:ok,
+            [
+              [~c"Adam", ~c"Karissa", 2020],
+              [~c"Adam", ~c"Zhang", 2020],
+              [~c"Karissa", ~c"Zhang", 2021],
+              [~c"Zhang", ~c"Noura", 2022]
+            ]} =
              Proxy.execute(
                path,
                """
@@ -43,7 +44,7 @@ defmodule KuzuPyPortExTest do
                """
              )
 
-    assert [[~c"Karissa"]] =
+    assert {:ok, [[~c"Karissa"]]} =
              Proxy.execute(path, "MATCH (a:User) WHERE a.name = $name RETURN a.name", %{
                "name" => "Karissa"
              })
