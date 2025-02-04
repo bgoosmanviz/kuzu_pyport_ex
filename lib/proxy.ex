@@ -7,6 +7,14 @@ defmodule KuzuPyPortEx.Proxy do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
+  @doc """
+  Execute a query on a KuzuDB database.
+
+  ```elixir
+  KuzuPyPortEx.Proxy.execute("path/to/kuzu/db", "SELECT * FROM users")
+  KuzuPyPortEx.Proxy.execute("path/to/kuzu/db", "SELECT * FROM users WHERE name = $name", %{name: "Adam"})
+  ```
+  """
   def execute(path, query, parameters \\ %{}) do
     GenServer.call(__MODULE__, {:execute, path, query, parameters})
   end
