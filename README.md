@@ -10,14 +10,22 @@ by adding `kuzu_pyport_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:kuzu_pyport_ex, "~> 0.1.2"}
+    {:kuzu_pyport_ex, "~> 0.1.3"}
   ]
 end
 ```
 
 ## Usage
 
-Expects Python to be installed with the kuzu==0.7.1 package. Python 3.12 works well.
+Expects Python to be installed with the kuzu package. Python 3.12 works well.
+
+e.g.
+
+```
+uv venv
+source .venv/bin/activate
+uv pip install kuzu
+```
 
 Install the Proxy in your supervision tree:
 

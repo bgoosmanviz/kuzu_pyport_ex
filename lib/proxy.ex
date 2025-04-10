@@ -13,10 +13,21 @@ defmodule KuzuPyPortEx.Proxy do
   ```elixir
   KuzuPyPortEx.Proxy.execute("path/to/kuzu/db", "SELECT * FROM users")
   KuzuPyPortEx.Proxy.execute("path/to/kuzu/db", "SELECT * FROM users WHERE name = $name", %{name: "Adam"})
+  KuzuPyPortEx.Proxy.execute("path/to/kuzu/db", "SELECT * FROM users", %{}, 5000) # with 5 second timeout
   ```
   """
-  def execute(path, query, parameters \\ %{}) do
-    GenServer.call(__MODULE__, {:execute, path, query, parameters})
+  def execute(path, query, parameters \\ %{}, opts \\ []) do
+    timeout = Keyword.get(opts, :timeout, 5000)
+
+    try do
+      GenServer.call(__MODULE__, {:execute, path, query, parameters}, timeout)
+    catch
+      :exit, {:timeout, _} ->
+        {:error, :timeout}
+
+      error ->
+        {:error, error}
+    end
   end
 
   # server

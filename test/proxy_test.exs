@@ -1,6 +1,16 @@
 defmodule KuzuPyPortExTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   alias KuzuPyPortEx.Proxy
+
+  test "can set timeout" do
+    assert {:error, :timeout} = Proxy.execute("tmp", "RETURN 1;", %{}, timeout: 1)
+  end
+
+  test "can install vector extension" do
+    path = "/tmp/demo-db"
+    Proxy.execute(path, "INSTALL VECTOR;", %{}, timeout: :infinity) |> dbg
+    Proxy.execute(path, "LOAD VECTOR;", %{}, timeout: :infinity) |> dbg
+  end
 
   test "execute/2 performs duplication of text" do
     File.rm_rf!("tmp")
