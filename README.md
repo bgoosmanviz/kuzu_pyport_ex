@@ -10,7 +10,7 @@ by adding `kuzu_pyport_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:kuzu_pyport_ex, "~> 0.1.3"}
+    {:kuzu_pyport_ex, "~> 0.1.4"}
   ]
 end
 ```

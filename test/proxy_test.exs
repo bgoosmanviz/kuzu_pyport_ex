@@ -6,10 +6,24 @@ defmodule KuzuPyPortExTest do
     assert {:error, :timeout} = Proxy.execute("tmp", "RETURN 1;", %{}, timeout: 1)
   end
 
-  test "can install vector extension" do
+  test "can create vector index" do
+    # We have to open a long lived connection, otherwise the VECTOR extension will go out of scope immediately after it's loaded.
     path = "/tmp/demo-db"
+    Proxy.open(path, timeout: :infinity)
     Proxy.execute(path, "INSTALL VECTOR;", %{}, timeout: :infinity) |> dbg
     Proxy.execute(path, "LOAD VECTOR;", %{}, timeout: :infinity) |> dbg
+    Proxy.execute(path, "CREATE NODE TABLE Book(id SERIAL PRIMARY KEY, title STRING, title_embedding FLOAT[384], published_year INT64);")
+    Proxy.execute(path, "CREATE NODE TABLE Publisher(name STRING PRIMARY KEY);")
+    Proxy.execute(path, "CREATE REL TABLE PublishedBy(FROM Book TO Publisher);")
+    Proxy.execute(path, """
+    CALL CREATE_VECTOR_INDEX(
+        'Book',
+        'title_vec_index',
+        'title_embedding'
+    );
+    """)
+    Proxy.execute(path, "CALL DROP_VECTOR_INDEX('Book', 'title_vec_index');", %{}, timeout: :infinity) |> dbg
+    Proxy.close(path)
   end
 
   test "execute/2 performs duplication of text" do
