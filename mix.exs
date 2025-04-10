@@ -1,7 +1,7 @@
 defmodule KuzuPyPortEx.MixProject do
   use Mix.Project
 
-  @version "0.1.4"
+  @version "0.1.5"
   @source_url "https://github.com/bgoosmanviz/kuzu_pyport_ex"
 
   def project do
@@ -21,7 +21,7 @@ defmodule KuzuPyPortEx.MixProject do
   def application do
     [
       extra_applications: [:logger, :export],
-      mod: {KuzuPyPortEx.Application, []}
+      # mod: {KuzuPyPortEx.Application, []}
     ]
   end
 

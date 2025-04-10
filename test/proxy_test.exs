@@ -2,6 +2,12 @@ defmodule KuzuPyPortExTest do
   use ExUnit.Case, async: false
   alias KuzuPyPortEx.Proxy
 
+  setup do
+    # Start the GenServer
+    {:ok, _} = Proxy.start_link([])
+    :ok
+  end
+
   test "can set timeout" do
     assert {:error, :timeout} = Proxy.execute("tmp", "RETURN 1;", %{}, timeout: 1)
   end
