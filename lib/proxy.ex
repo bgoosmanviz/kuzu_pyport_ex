@@ -82,18 +82,39 @@ defmodule KuzuPyPortEx.Proxy do
   end
 
   def handle_call({:open, path}, _from, %{py: py} = state) do
-    result = Python.call(py, "kuzu_proxy", "open", [path])
-    {:reply, {:ok, result}, state}
+    try do
+      result = Python.call(py, "kuzu_proxy", "open", [path])
+      {:reply, {:ok, result}, state}
+    rescue
+      error in [RuntimeError, ArgumentError] ->
+        {:reply, {:error, error.message}, state}
+      error ->
+        {:reply, {:error, "Unexpected error: #{inspect(error)}"}, state}
+    end
   end
 
   def handle_call({:close, path}, _from, %{py: py} = state) do
-    result = Python.call(py, "kuzu_proxy", "close", [path])
-    {:reply, {:ok, result}, state}
+    try do
+      result = Python.call(py, "kuzu_proxy", "close", [path])
+      {:reply, {:ok, result}, state}
+    rescue
+      error in [RuntimeError, ArgumentError] ->
+        {:reply, {:error, error.message}, state}
+      error ->
+        {:reply, {:error, "Unexpected error: #{inspect(error)}"}, state}
+    end
   end
 
   def handle_call({:execute, path, query, parameters}, _from, %{py: py} = state) do
-    result = Python.call(py, "kuzu_proxy", "execute", [path, query, parameters])
-    {:reply, {:ok, result}, state}
+    try do
+      result = Python.call(py, "kuzu_proxy", "execute", [path, query, parameters])
+      {:reply, {:ok, result}, state}
+    rescue
+      error in [RuntimeError, ArgumentError] ->
+        {:reply, {:error, error.message}, state}
+      error ->
+        {:reply, {:error, "Unexpected error: #{inspect(error)}"}, state}
+    end
   end
 
   def terminate(_reason, %{py: py} = _state) do
